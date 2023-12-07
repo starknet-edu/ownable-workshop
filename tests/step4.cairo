@@ -1,5 +1,5 @@
 use ownable::counter::{ICounterContractDispatcher, ICounterContractDispatcherTrait};
-use ownable::ownable::{IOwnableDispatcher, IOwnableDispatcherTrait};
+use openzeppelin::access::ownable::interface::{IOwnableDispatcher, IOwnableDispatcherTrait};
 use snforge_std::{start_prank, stop_prank, CheatTarget};
 use starknet::{get_caller_address};
 use super::utils::{deploy_contract, Accounts};
