@@ -41,7 +41,7 @@ mod CounterContract {
         self.initializer(initial_owner);
     }
 
-    #[external(v0)]
+    #[abi(embed_v0)]
     impl CounterContract of super::ICounterContract<ContractState> {
         fn get_counter(self: @ContractState) -> u32 {
             self.counter.read()
@@ -54,7 +54,7 @@ mod CounterContract {
         }
     }
 
-    #[external(v0)]
+    #[abi(embed_v0)]
     impl OwnableImpl of super::IOwnable<ContractState> {
         fn owner(self: @ContractState) -> ContractAddress {
             self.owner.read()
