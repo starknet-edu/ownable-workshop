@@ -9,7 +9,7 @@ fn check_increase_counter_as_owner() {
     let initial_counter = 0;
     let contract_address = deploy_contract(initial_counter);
     let dispatcher = ICounterContractDispatcher { contract_address };
-    
+
     start_prank(CheatTarget::One(contract_address), Accounts::OWNER());
     dispatcher.increase_counter();
     let stored_counter = dispatcher.get_counter();
@@ -24,7 +24,7 @@ fn check_increase_counter_as_bad_actor() {
     let initial_counter = 0;
     let contract_address = deploy_contract(initial_counter);
     let dispatcher = ICounterContractDispatcher { contract_address };
-    
+
     start_prank(CheatTarget::One(contract_address), Accounts::BAD_ACTOR());
     dispatcher.increase_counter();
     let stored_counter = dispatcher.get_counter();

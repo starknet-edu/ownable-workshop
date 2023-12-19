@@ -11,3 +11,6 @@ openzeppelin = { git = "https://github.com/OpenZeppelin/cairo-contracts.git", ta
 [[target.starknet-contract]]
 sierra = true
 casm = true
+
+[tool.sncast]
+url = "http://0.0.0.0:5050/rpc"
