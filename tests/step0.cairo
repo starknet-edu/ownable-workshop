@@ -8,7 +8,6 @@ use kill_switch::{IKillSwitchDispatcher, IKillSwitchDispatcherTrait};
 use ownable::counter::{ICounterDispatcher, ICounterDispatcherTrait};
 
 
-
 #[test]
 fn check_stored_counter() {
     let initial_counter = 12;
