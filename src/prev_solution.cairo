@@ -13,7 +13,7 @@ trait IOwnable<T> {
 
 #[starknet::contract]
 mod Counter {
-    use starknet::{ContractAddress};
+    use starknet::{ContractAddress, get_caller_address, Zeroable};
     use super::{ICounter, IOwnable};
     use kill_switch::{IKillSwitchDispatcher, IKillSwitchDispatcherTrait};
 
@@ -26,10 +26,7 @@ mod Counter {
 
     #[constructor]
     fn constructor(
-        ref self: ContractState,
-        initial_counter: u32,
-        kill_switch_address: ContractAddress,
-        initial_owner: ContractAddress
+        ref self: ContractState, initial_counter: u32, kill_switch_address: ContractAddress, initial_owner: ContractAddress
     ) {
         self.counter.write(initial_counter);
         self.kill_switch.write(IKillSwitchDispatcher { contract_address: kill_switch_address });
@@ -54,7 +51,7 @@ mod Counter {
         }
         fn increase_counter(ref self: ContractState) {
             let is_active = self.kill_switch.read().is_active();
-
+            self.assert_only_owner();
             if is_active {
                 let current_counter = self.counter.read();
                 self.counter.write(current_counter + 1);
@@ -67,6 +64,16 @@ mod Counter {
     impl OwnableImpl of IOwnable<ContractState> {
         fn owner(self: @ContractState) -> ContractAddress {
             self.owner.read()
+        }
+    }
+
+    #[generate_trait]
+    impl InternalImpl of InternalTrait {
+        fn assert_only_owner(self: @ContractState) {
+            let owner: ContractAddress = self.owner.read();
+            let caller = get_caller_address();
+            assert(!caller.is_zero(), 'Caller is the zero address');
+            assert(caller == owner, 'Caller is not the owner');
         }
     }
 }

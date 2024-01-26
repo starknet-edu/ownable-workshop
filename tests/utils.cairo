@@ -2,6 +2,7 @@ use core::array::ArrayTrait;
 use starknet::{ContractAddress, Into, TryInto};
 use snforge_std::{declare, cheatcodes::contract_class::ContractClassTrait};
 
+
 mod Errors {
     // Counter
     const NOT_EQUAL: felt252 = 'Stored value not equal';
@@ -14,17 +15,21 @@ mod Errors {
 mod Accounts {
     use traits::TryInto;
     use starknet::{ContractAddress};
+    use starknet::contract_address_const;
 
     fn OWNER() -> ContractAddress {
-        'owner'.try_into().unwrap()
+        contract_address_const::<'owner'>()
     }
 
     fn NEW_OWNER() -> ContractAddress {
-        'new_owner'.try_into().unwrap()
+        contract_address_const::<'new_owner'>()
     }
 
     fn BAD_ACTOR() -> ContractAddress {
-        'bad_actor'.try_into().unwrap()
+        contract_address_const::<'bad_actor'>()
+    }
+    fn ZERO() -> ContractAddress {
+        contract_address_const::<0>()
     }
 }
 
