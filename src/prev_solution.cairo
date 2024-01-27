@@ -9,6 +9,7 @@ trait ICounter<T> {
 #[starknet::interface]
 trait IOwnable<T> {
     fn owner(self: @T) -> ContractAddress;
+    fn transfer_ownership(ref self: T, new_owner: ContractAddress);
 }
 
 #[starknet::contract]
@@ -65,6 +66,11 @@ mod Counter {
         fn owner(self: @ContractState) -> ContractAddress {
             self.owner.read()
         }
+        fn transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
+            assert(!new_owner.is_zero(), 'Caller is the zero address');
+            self.assert_only_owner();
+            self._transfer_ownership(new_owner);
+        }
     }
 
     #[generate_trait]
@@ -74,6 +80,10 @@ mod Counter {
             let caller = get_caller_address();
             assert(!caller.is_zero(), 'Caller is the zero address');
             assert(caller == owner, 'Caller is not the owner');
+        }
+        
+        fn _transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
+            self.owner.write(new_owner);
         }
     }
 }
