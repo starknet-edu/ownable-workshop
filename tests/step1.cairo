@@ -1,4 +1,4 @@
-use ownable::ownable::{IOwnableDispatcher, IOwnableDispatcherTrait};
+use openzeppelin::access::ownable::interface::{IOwnableDispatcher, IOwnableDispatcherTrait};
 use ownable::counter::{ICounterDispatcher, ICounterDispatcherTrait};
 use super::utils::{deploy_contract, Accounts, Errors};
 
