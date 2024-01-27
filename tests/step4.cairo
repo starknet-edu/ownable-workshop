@@ -1,4 +1,4 @@
-use ownable::ownable::{IOwnableDispatcher, IOwnableDispatcherTrait};
+use openzeppelin::access::ownable::interface::{IOwnableDispatcher, IOwnableDispatcherTrait};
 use snforge_std::{
     spy_events, EventSpy, EventFetcher, event_name_hash, EventAssertions, Event, SpyOn
 };

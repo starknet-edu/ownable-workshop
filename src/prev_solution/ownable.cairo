@@ -7,11 +7,11 @@ trait IOwnable<T> {
     fn renounce_ownership(ref self: T);
 }
 
-#[starknet::contract]
+#[starknet::component]
 mod OwnableComponent {
     use starknet::{ContractAddress, get_caller_address, Zeroable};
     use super::{IOwnable};
-
+    
     #[storage]
     struct Storage {
         owner: ContractAddress,
@@ -29,44 +29,46 @@ mod OwnableComponent {
         new_owner: ContractAddress,
     }
 
-    #[constructor]
-    fn constructor(
-        ref self: ContractState, initial_owner: ContractAddress
-    ) {
-        self.owner.write(initial_owner);
-    }
-
-   #[abi(embed_v0)]
-    impl OwnableImpl of IOwnable<ContractState> {
-        fn owner(self: @ContractState) -> ContractAddress {
+    #[embeddable_as(OwnableImpl)]
+    impl Ownable<
+        TContractState, +HasComponent<TContractState>
+    > of IOwnable<ComponentState<TContractState>> {
+        fn owner(self: @ComponentState<TContractState>) -> ContractAddress {
             self.owner.read()
         }
-        fn transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
-            assert(!new_owner.is_zero(), 'Caller is the zero address');
+
+        fn transfer_ownership(
+            ref self: ComponentState<TContractState>, new_owner: ContractAddress
+        ) {
+            assert(!new_owner.is_zero(), 'New owner is the zero address');
             self.assert_only_owner();
-            self._transfer_ownership(new_owner);
+            self._transfer_ownership(new_owner)
         }
 
-        fn renounce_ownership(ref self: ContractState) {
+        fn renounce_ownership(ref self: ComponentState<TContractState>) {
             self.assert_only_owner();
             self._transfer_ownership(Zeroable::zero())
         }
     }
 
     #[generate_trait]
-    impl InternalImpl of InternalTrait {
-        fn initializer(ref self: ContractState, owner: ContractAddress) {
+    impl InternalImpl<
+        TContractState, +HasComponent<TContractState>
+    > of InternalTrait<TContractState> {
+        fn initializer(ref self: ComponentState<TContractState>, owner: ContractAddress) {
             self._transfer_ownership(owner);
         }
 
-        fn assert_only_owner(self: @ContractState) {
+        fn assert_only_owner(self: @ComponentState<TContractState>) {
             let owner: ContractAddress = self.owner.read();
             let caller = get_caller_address();
             assert(!caller.is_zero(), 'Caller is the zero address');
             assert(caller == owner, 'Caller is not the owner');
         }
 
-        fn _transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
+        fn _transfer_ownership(
+            ref self: ComponentState<TContractState>, new_owner: ContractAddress
+        ) {
             let previous_owner: ContractAddress = self.owner.read();
             self.owner.write(new_owner);
             self
