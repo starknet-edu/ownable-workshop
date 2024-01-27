@@ -10,6 +10,7 @@ trait ICounter<T> {
 trait IOwnable<T> {
     fn owner(self: @T) -> ContractAddress;
     fn transfer_ownership(ref self: T, new_owner: ContractAddress);
+    fn renounce_ownership(ref self: T);
 }
 
 #[starknet::contract]
@@ -27,10 +28,7 @@ mod Counter {
 
     #[constructor]
     fn constructor(
-        ref self: ContractState,
-        initial_counter: u32,
-        kill_switch_address: ContractAddress,
-        initial_owner: ContractAddress
+        ref self: ContractState, initial_counter: u32, kill_switch_address: ContractAddress, initial_owner: ContractAddress
     ) {
         self.counter.write(initial_counter);
         self.kill_switch.write(IKillSwitchDispatcher { contract_address: kill_switch_address });
@@ -81,6 +79,11 @@ mod Counter {
             assert(!new_owner.is_zero(), 'Caller is the zero address');
             self.assert_only_owner();
             self._transfer_ownership(new_owner);
+        }
+
+        fn renounce_ownership(ref self: ContractState) {
+            self.assert_only_owner();
+            self._transfer_ownership(Zeroable::zero())
         }
     }
 
