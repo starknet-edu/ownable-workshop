@@ -28,6 +28,7 @@ mod Accounts {
     fn BAD_ACTOR() -> ContractAddress {
         contract_address_const::<'bad_actor'>()
     }
+    
     fn ZERO() -> ContractAddress {
         contract_address_const::<0>()
     }
