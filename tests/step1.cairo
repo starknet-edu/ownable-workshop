@@ -1,13 +1,11 @@
-use ownable::counter::{ICounterContractDispatcher, ICounterContractDispatcherTrait};
-
-use super::utils::{deploy_contract};
+use ownable::counter::{ICounterDispatcher, ICounterDispatcherTrait, IOwnableDispatcher, IOwnableDispatcherTrait};
+use super::utils::{deploy_contract, Accounts, Errors};
 
 #[test]
-fn check_stored_counter() {
+fn check_constructor_initial_owner() {
     let initial_counter = 12;
-    let constructor_args = array![initial_counter.into()];
-    let contract_address = deploy_contract(constructor_args);
-    let dispatcher = ICounterContractDispatcher { contract_address };
-    let stored_counter = dispatcher.get_counter();
-    assert(stored_counter == initial_counter, 'Wrong Stored Counter');
+    let contract_address = deploy_contract(initial_counter, true);
+    let dispatcher = IOwnableDispatcher { contract_address };
+    let current_owner = dispatcher.owner();
+    assert(Accounts::OWNER() == current_owner, Errors::NOT_OWNER);
 }
