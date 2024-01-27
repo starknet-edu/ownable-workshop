@@ -1,4 +1,3 @@
-use kill_switch::{IKillSwitchDispatcher, IKillSwitchDispatcherTrait};
 use ownable::counter::{IOwnableDispatcher, IOwnableDispatcherTrait};
 use snforge_std::{
     spy_events, EventSpy, EventFetcher, event_name_hash, EventAssertions, Event, SpyOn
