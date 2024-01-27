@@ -1,4 +1,4 @@
-use ownable::counter::{IOwnableDispatcher, IOwnableDispatcherTrait};
+use ownable::ownable::{IOwnableDispatcher, IOwnableDispatcherTrait};
 use super::utils::{deploy_contract, Accounts, Errors};
 use snforge_std::{start_prank, stop_prank, CheatTarget};
 
@@ -16,7 +16,7 @@ fn check_transfer_ownership_as_owner() {
 }
 
 #[test]
-#[should_panic(expected: ('Caller is the zero address',))]
+#[should_panic(expected: ('New owner is the zero address',))]
 fn check_transfer_ownership_to_zero_address() {
     let initial_counter = 0;
     let contract_address = deploy_contract(initial_counter, true);
