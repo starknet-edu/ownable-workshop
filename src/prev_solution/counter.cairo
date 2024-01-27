@@ -32,7 +32,7 @@ mod Counter {
     ) {
         self.counter.write(initial_counter);
         self.kill_switch.write(IKillSwitchDispatcher { contract_address: kill_switch_address });
-        self.owner.write(initial_owner);
+        self.initializer(initial_owner);
     }
 
     #[event]
@@ -89,6 +89,10 @@ mod Counter {
 
     #[generate_trait]
     impl InternalImpl of InternalTrait {
+        fn initializer(ref self: ContractState, owner: ContractAddress) {
+            self._transfer_ownership(owner);
+        }
+
         fn assert_only_owner(self: @ContractState) {
             let owner: ContractAddress = self.owner.read();
             let caller = get_caller_address();

@@ -1,4 +1,4 @@
-use ownable::counter::{IOwnableDispatcher, IOwnableDispatcherTrait};
+use ownable::ownable::{IOwnableDispatcher, IOwnableDispatcherTrait};
 use super::utils::{deploy_contract, Accounts, Errors};
 
 #[test]
