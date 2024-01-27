@@ -11,7 +11,7 @@ mod Counter {
     use starknet::{ContractAddress, get_caller_address, Zeroable};
     use super::{ICounter};
     use kill_switch::{IKillSwitchDispatcher, IKillSwitchDispatcherTrait};
-    use ownable::ownable::OwnableComponent;
+    use openzeppelin::access::ownable::OwnableComponent;
 
     component!(path: OwnableComponent, storage: ownable, event: OwnableEvent);
 
