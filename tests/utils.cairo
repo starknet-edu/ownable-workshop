@@ -42,12 +42,7 @@ fn deploy_contract(initial_value: u32, kill_switch: bool) -> ContractAddress {
     let constructor_args: Array<felt252> = array![
         initial_value.into(), contract_address.into(), Accounts::OWNER().into()
     ];
-    let contract_address = contract.deploy(@constructor_args).unwrap();
-
-    let contract = declare('OwnableComponent');
-    let constructor_args: Array<felt252> = array![
-        Accounts::OWNER().into()
-    ];
     contract.deploy(@constructor_args).unwrap()
+
 }
 

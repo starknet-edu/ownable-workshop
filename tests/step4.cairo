@@ -1,4 +1,3 @@
-use kill_switch::{IKillSwitchDispatcher, IKillSwitchDispatcherTrait};
 use ownable::ownable::{IOwnableDispatcher, IOwnableDispatcherTrait};
 use snforge_std::{
     spy_events, EventSpy, EventFetcher, event_name_hash, EventAssertions, Event, SpyOn
@@ -25,8 +24,8 @@ fn spy_transfer_event() {
 
     let (from, event) = spy.events.at(0);
     assert(from == @contract_address, 'Emitted from wrong address');
-    assert(event.keys.len() == 1, 'There should be one key');
-    assert(event.keys.at(0) == @event_name_hash('OwnershipTransferred'), 'Wrong event name');
+    assert(event.keys.len() == 2, 'There should be one key');
+    assert(event.keys.at(1) == @event_name_hash('OwnershipTransferred'), 'Wrong event name');
     assert(event.data.len() == 2, 'There should be one data');
 
     stop_prank(CheatTarget::One(contract_address));
