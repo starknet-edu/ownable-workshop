@@ -27,7 +27,10 @@ mod Counter {
 
     #[constructor]
     fn constructor(
-        ref self: ContractState, initial_counter: u32, kill_switch_address: ContractAddress, initial_owner: ContractAddress
+        ref self: ContractState,
+        initial_counter: u32,
+        kill_switch_address: ContractAddress,
+        initial_owner: ContractAddress
     ) {
         self.counter.write(initial_counter);
         self.kill_switch.write(IKillSwitchDispatcher { contract_address: kill_switch_address });
@@ -38,12 +41,20 @@ mod Counter {
     #[derive(Drop, starknet::Event)]
     enum Event {
         CounterIncreased: CounterIncreased,
+        OwnershipTransferred: OwnershipTransferred,
     }
 
     #[derive(Drop, starknet::Event)]
     struct CounterIncreased {
         counter: u32
     }
+
+    #[derive(Drop, starknet::Event)]
+    struct OwnershipTransferred {
+        previous_owner: ContractAddress,
+        new_owner: ContractAddress,
+    }
+
 
     #[abi(embed_v0)]
     impl CounterImpl of ICounter<ContractState> {
@@ -81,9 +92,14 @@ mod Counter {
             assert(!caller.is_zero(), 'Caller is the zero address');
             assert(caller == owner, 'Caller is not the owner');
         }
-        
+
         fn _transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
+            let previous_owner: ContractAddress = self.owner.read();
             self.owner.write(new_owner);
+            self
+                .emit(
+                    OwnershipTransferred { previous_owner: previous_owner, new_owner: new_owner }
+                );
         }
     }
 }
