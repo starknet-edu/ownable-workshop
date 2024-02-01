@@ -12,9 +12,35 @@ Use the [Cairo book](https://book.cairo-lang.org/ch00-00-introduction.html) and 
 
 1. Clone this repository
 2. Create a new file called `counter.cairo` inside the `src` folder
-3. Copy the final code from the [Counter Workshop](https://github.com/starknet-edu/counter-workshop/blob/step6/src/prev_solution.cairo)
+3. Copy the final code from the [Counter Workshop](https://github.com/starknet-edu/counter-workshop/blob/step6/src/prev_solution.cairo) into the `counter.cairo` file
 
 > **Note:** You'll be working on the `counter.cairo` and `ownable.cairo` files to complete the requirements of each step. The folder `prev_solution` will show up in future steps as a way to catch up with the workshop if you fall behind. **Don't modify that file**.
+
+The next setup steps will depend on wether you prefer using Docker to manage global dependencies or not.
+
+### Option 1: Without Docker
+
+4. Install Scarb 2.4.4 ([instructions](https://docs.swmansion.com/scarb/download.html#install-via-asdf))
+1. Install Starknet Foundry 0.14.0 ([instructions](https://foundry-rs.github.io/starknet-foundry/getting-started/installation.html))
+1. Install the Cairo 1.0 extension for VSCode ([marketplace](https://marketplace.visualstudio.com/items?itemName=starkware.cairo1))
+1. Run the tests to verify the project is setup correctly
+
+```bash
+$ scarb test
+```
+
+### Option 2: With Docker
+
+4. Make sure Docker is installed and running
+5. Install the Dev Containers extension for VSCode ([marketplace](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers))
+6. Launch an instance of VSCode inside of the container by going to **View -> Command Palette -> Dev Containers: Rebuild and Reopen in Container**
+7. Open VSCode's integrated terminal and run the tests to verify the project is setup correctly
+
+```bash
+$ scarb test
+```
+
+> **Note:** All the commands shown from this point on will assume that you are using the integrated terminal of a VSCode instance running inside the container. If you want to run the tests on a different terminal you'll need to use the command `docker compose run test`.
 
 ## Step 1
 
