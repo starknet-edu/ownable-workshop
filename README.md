@@ -267,7 +267,7 @@ $ snforge test
   - add generic parameters for the impl block such as `TContractState` and `+HasComponent<TContractState>`
   - change the `self` argument to `ComponentState<TContractState>`
 
-    > **Note:** Read more on [Chapter 12.4: Migrating a Contract to a Component](https://book.cairo-lang.org/ch99-01-05-00-components.html?highlight=compon#migrating-a-contract-to-a-component)
+    > **Note:** Read more on [Chapter 12.4: Migrating a Contract to a Component](https://book.cairo-lang.org/ch99-01-05-00-components.html#migrating-a-contract-to-a-component)
 
 - to use the component inside the `counter.cairo` you will need to
 
@@ -275,7 +275,7 @@ $ snforge test
   - add the path to the component's storage and events to your contract's `Storage` and `Events`
   - instantiate the component's implementation
 
-    > **Note:** Read more on [Chapter 12.4: Using Components inside a contract](https://book.cairo-lang.org/ch99-01-05-00-components.html?highlight=compon#using-components-inside-a-contract)
+    > **Note:** Read more on [Chapter 12.4: Using Components inside a contract](https://book.cairo-lang.org/ch99-01-05-00-components.html#using-components-inside-a-contract)
 
 ## Step 9
 
