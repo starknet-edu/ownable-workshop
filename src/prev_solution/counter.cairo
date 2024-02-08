@@ -76,7 +76,7 @@ mod Counter {
             self.owner.read()
         }
         fn transfer_ownership(ref self: ContractState, new_owner: ContractAddress) {
-            assert(!new_owner.is_zero(), 'Caller is the zero address');
+            assert(!new_owner.is_zero(), 'New owner is the zero address');
             self.assert_only_owner();
             self._transfer_ownership(new_owner);
         }
